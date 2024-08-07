@@ -1,24 +1,17 @@
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: db
-  namespace: expense
-  labels:
-    project: expense
-    component: mysql
+  name: mysql
 spec:
   selector:
     matchLabels:
-      project: expense
-      component: mysql
-  serviceName: db-service
+      app: expense-app
+  serviceName: "mysql"
   replicas: 1
   template:
     metadata:
       labels:
-        project: expense
-        component: mysql
+        app: expense-app
     spec:
       containers:
         - name: mysql
@@ -28,22 +21,22 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
-                  key: MYSQL_ROOT_PASSWORD
-            - name: MYSQL_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: MYSQL_DATABASE
+                  key: mysql-root-password
             - name: MYSQL_USER
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
-                  key: MYSQL_USER
+                  key: mysql-user
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
-                  key: MYSQL_PASSWORD
+                  key: mysql-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: mysql-database
           ports:
             - containerPort: 3306
           volumeMounts:

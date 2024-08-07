@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: backend-db
-  namespace: expense
+  name: expense-backend-config
 data:
-  DB_HOST: db-service
+  DB_HOST: mysql
+  DB_DATABASE: transactions

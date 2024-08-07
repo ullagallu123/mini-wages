@@ -1,47 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
-  namespace: expense
-  labels:
-    project: expense
-    component: backend
+  name: expense-backend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      project: expense
-      component: backend
+      app: expense-backend
   template:
     metadata:
       labels:
-        project: expense
-        component: backend
+        app: expense-backend
     spec:
       containers:
-        - name: backend
-          image: siva9666/wages-backend:k8s-alpine
-          ports:
-            - containerPort: 8080
+        - name: expense-backend
+          image: siva9666/backend:1.0
           env:
-            
-            - name: MYSQL_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: backend-secret
-                  key: DB_DATABASE
-            - name: MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: backend-secret
-                  key: DB_USER
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: backend-secret
-                  key: DB_PWD
-            - name: MYSQL_SERVICE
+            - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: backend-db
+                  name: expense-backend-config
                   key: DB_HOST
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: expense-backend-config
+                  key: DB_DATABASE
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: expense-backend-secret
+                  key: DB_USER
+            - name: DB_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: expense-backend-secret
+                  key: DB_PWD
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+
