@@ -7,3 +7,5 @@ spec:
   containers:
   - name: debug
     image: siva9666/debug:2.0
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do sleep 30; done;"]
