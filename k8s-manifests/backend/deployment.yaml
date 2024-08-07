@@ -46,6 +46,6 @@ spec:
                   key: mysql-password
             - name: MYSQL_SERVICE
               valueFrom:
-                configMapKeyRef:
+                configMapRef:
                   name: backend-db
-                  key: mysql-service
+

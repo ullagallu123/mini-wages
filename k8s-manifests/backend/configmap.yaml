@@ -4,4 +4,4 @@ metadata:
   name: backend-db
   namespace: expense
 data:
-  mysql-service: db-service
+  DB_HOST: db-service
