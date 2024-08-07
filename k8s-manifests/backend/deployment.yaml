@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: expense
+  labels:
+    project: expense
+    component: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      project: expense
+      component: backend
+  template:
+    metadata:
+      labels:
+        project: expense
+        component: backend
+    spec:
+      containers:
+        - name: backend
+          image: siva9666/wages-backend:k8s-alpine
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: mysql-root-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: mysql-database
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: mysql-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: mysql-password
+            - name: MYSQL_SERVICE
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-db
+                  key: mysql-service
