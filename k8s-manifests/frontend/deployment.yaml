@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: expense
+  labels:
+    project: expense
+    component: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      project: expense
+      component: frontend
+  template:
+    metadata:
+      labels:
+        project: expense
+        component: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: siva9666/wages-web:v1
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            
+      volumes:
+        - name: nginx-config-volume
+          configMap:
+            name: nginx-config
+        
