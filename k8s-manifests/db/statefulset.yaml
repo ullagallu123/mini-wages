@@ -12,6 +12,7 @@ spec:
     matchLabels:
       project: expense
       component: mysql
+  serviceName: db-service
   replicas: 1
   template:
     metadata:
@@ -53,6 +54,7 @@ spec:
         name: expense-mysql-storage
       spec:
         accessModes: ["ReadWriteOnce"]
+        storageClassName: gp3
         resources:
           requests:
             storage: 1Gi
